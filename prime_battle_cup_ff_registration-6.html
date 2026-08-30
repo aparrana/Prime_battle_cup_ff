@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prime Battle Cup FF — Registration</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#090b12;color:#fff}
+.hero{min-height:100vh;padding:28px 16px;background:radial-gradient(circle at 50% 10%,#3b145d 0,#15132b 38%,#090b12 75%);display:flex;align-items:center;justify-content:center}
+.card{width:min(760px,100%);background:rgba(18,20,31,.94);border:1px solid #3b3f56;border-radius:24px;box-shadow:0 20px 60px #0008;overflow:hidden}
+.header{text-align:center;padding:34px 22px 24px;border-bottom:1px solid #303447}
+.badge{display:inline-block;padding:7px 14px;border-radius:999px;background:#f5a623;color:#111;font-weight:800;font-size:13px}
+h1{font-size:clamp(30px,7vw,52px);margin:16px 0 8px;letter-spacing:.5px}
+.sub{color:#aeb3c5;margin:0 0 22px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:#111421;border:1px solid #2c3042;border-radius:14px;padding:13px 8px}.stat b{display:block;font-size:18px}.stat span{font-size:11px;color:#8f95aa}
+form{padding:26px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.full{grid-column:1/-1}
+label{display:block;font-size:13px;color:#c9cddd;font-weight:700;margin:0 0 7px}
+input{width:100%;padding:14px;border-radius:12px;border:1px solid #35394c;background:#0d1019;color:#fff;outline:none}
+input:focus{border-color:#f5a623}h2{font-size:18px;margin:0 0 16px;color:#f5a623}
+.section{margin-bottom:24px}.note{font-size:12px;color:#9298ac;margin-top:8px;line-height:1.5}
+button{width:100%;padding:16px;border:0;border-radius:13px;background:linear-gradient(90deg,#f5a623,#ffcc55);color:#111;font-size:16px;font-weight:900;cursor:pointer}
+button:hover{filter:brightness(1.06)}.success{display:none;margin:18px 26px 26px;padding:18px;border-radius:14px;background:#102718;border:1px solid #2f8048;color:#bdf0c9;text-align:center}
+.footer{text-align:center;color:#747b91;font-size:12px;padding:0 20px 24px}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.full{grid-column:auto}form{padding:20px}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <main class="card">
+    <header class="header">
+      <span class="badge">FREE FIRE DUO TOURNAMENT</span>
+      <h1>Prime Battle Cup FF</h1>
+      <p class="sub">Register your duo and get ready for battle!</p>
+      <div class="stats">
+        <div class="stat"><b>27 Sep</b><span>2026</span></div>
+        <div class="stat"><b>10:00 AM</b><span>Start Time</span></div>
+        <div class="stat"><b>₹300</b><span>Entry Fee</span></div>
+        <div class="stat"><b>DUO</b><span>Game Mode</span></div>
+      </div>
+    </header>
+
+    <form id="regForm">
+      <div class="section">
+        <h2>Team Details</h2>
+        <div class="grid">
+          <div class="full"><label>Team Name</label><input name="team" required placeholder="Enter your team name"></div>
+          <div><label>Player 1 Name</label><input name="p1" required placeholder="In-game name"></div>
+          <div><label>Player 1 UID</label><input name="uid1" required inputmode="numeric" placeholder="Free Fire UID"></div>
+          <div><label>Player 2 Name</label><input name="p2" required placeholder="In-game name"></div>
+          <div><label>Player 2 UID</label><input name="uid2" required inputmode="numeric" placeholder="Free Fire UID"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Contact Details</h2>
+        <div class="grid">
+          <div><label>WhatsApp / Phone</label><input name="phone" required type="tel" placeholder="10-digit number"></div>
+          <div><label>Email (optional)</label><input name="email" type="email" placeholder="you@example.com"></div>
+        </div>
+        <p class="note">Registration fee: ₹300 per duo. Payment verification can be added once your payment/UPI details are decided.</p>
+      </div>
+
+
+      <div class="section">
+        <h2>Payment</h2>
+        <div style="background:#111421;border:1px solid #35394c;border-radius:14px;padding:16px">
+          <p style="margin:0 0 8px;color:#c9cddd">Registration Fee: <b style="color:#f5a623">₹300</b></p>
+          <p style="margin:0;color:#fff">UPI ID: <b>7253811277@pthdfc</b></p>
+          <p class="note">Pay ₹300 using any UPI app, then enter your payment reference/UTR below.</p>
+        </div>
+        <div style="margin-top:14px">
+          <label>Payment Reference / UTR</label>
+          <input name="utr" required placeholder="Enter payment reference / UTR">
+        </div>
+      </div>
+      <button type="submit">REGISTER NOW — ₹300</button>
+    </form>
+
+    <div class="success" id="success">
+      <b>Registration form submitted! 🎉</b><br>
+      Your demo registration has been recorded in this browser.
+    </div>
+    <div class="footer">Prime Battle Cup FF • Duo Tournament • 27/09/2026 • 10:00 AM</div>
+  </main>
+</div>
+<script>
+document.getElementById('regForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const data=Object.fromEntries(new FormData(this).entries());
+  const regs=JSON.parse(localStorage.getItem('primeBattleRegistrations')||'[]');
+  regs.push({...data, submittedAt:new Date().toISOString()});
+  localStorage.setItem('primeBattleRegistrations',JSON.stringify(regs));
+  this.style.display='none';
+  document.getElementById('success').style.display='block';
+});
+</script>
+</body>
+</html>
